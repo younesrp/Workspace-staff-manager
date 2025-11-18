@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StaffMap</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="brand">
+      <h1>StaffMap</h1>
+      <p class="tagline">Gestion visuelle et centralisée du personnel</p>
+    </div>
+
+   
+  </header>
+
+  <div class="container">
+ <label for="modal-add-toggle" class="btn btn-primary">Add New Worker</label>
+      <div class="search">
+        <label for="search-input" class="visually-hidden">Rechercher un employé</label>
+        <input id="search-input" type="search" placeholder="Rechercher..." />
+      </div>
+    <aside class="sidebar" aria-labelledby="unassigned-heading">
+      <h2 id="unassigned-heading">Unassigned Staff</h2>
+
+      <section class="filters" aria-label="Filtres">
+        <label for="role-filter">Filtrer par rôle</label>
+        <select id="role-filter" name="role-filter">
+          <option value="">Tous les rôles</option>
+          <option value="reception">Réceptionniste</option>
+          <option value="it">Technicien IT</option>
+          <option value="security">Agent de sécurité</option>
+          <option value="manager">Manager</option>
+          <option value="cleaning">Nettoyage</option>
+          <option value="other">Autres</option>
+        </select>
+      </section>
+
+      
+
+      <footer class="sidebar-foot">
+        <small>Astuce : utilisez les boutons + dans chaque zone pour assigner un employé éligible.</small>
+      </footer>
+    </aside>
+
+    <main class="main-content" aria-label="Plan d'étage">
+      <h2 class="page-title">Plan d'étage</h2>
+      <p class="lead">Visualisation spatiale des zones et gestion des affectations.</p>
+
+      <div class="floor-grid">
+        <section class="zone zone-conference" id="conference" data-zone="conference" data-required="false" data-max="6">
+          <header class="zone-header">
+            <h3>Salle de conférence</h3>
+            <div class="zone-actions">
+              <button class="zone-add" title="Ajouter">+</button>
+              <span class="zone-capacity">0 / 6</span>
+            </div>
+          </header>
+          <ul class="zone-list" aria-label="Occupants salle de conférence">
+          </ul>
+        </section>
+        <section class="zone zone-reception" id="reception" data-zone="reception" data-required="true" data-max="2">
+          <header class="zone-header">
+            <h3>Réception</h3>
+            <div class="zone-actions">
+              <button class="zone-add" title="Ajouter">+</button>
+              <span class="zone-capacity">0 / 2</span>
+            </div>
+          </header>
+          <ul class="zone-list" aria-label="Occupants réception"></ul>
+        </section>
+
+        <section class="zone zone-servers" id="servers" data-zone="servers" data-required="true" data-max="3">
+          <header class="zone-header">
+            <h3>Salle des serveurs</h3>
+            <div class="zone-actions">
+              <button class="zone-add" title="Ajouter">+</button>
+              <span class="zone-capacity">0 / 3</span>
+            </div>
+          </header>
+          <ul class="zone-list" aria-label="Occupants salle des serveurs"></ul>
+        </section>
+
+        <section class="zone zone-security" id="security" data-zone="security" data-required="true" data-max="4">
+          <header class="zone-header">
+            <h3>Salle de sécurité</h3>
+            <div class="zone-actions">
+              <button class="zone-add" title="Ajouter">+</button>
+              <span class="zone-capacity">0 / 4</span>
+            </div>
+          </header>
+          <ul class="zone-list" aria-label="Occupants salle de sécurité"></ul>
+        </section>
+
+        <section class="zone zone-staffroom" id="staffroom" data-zone="staffroom" data-required="false" data-max="8">
+          <header class="zone-header">
+            <h3>Salle du personnel</h3>
+            <div class="zone-actions">
+              <button class="zone-add" title="Ajouter">+</button>
+              <span class="zone-capacity">0 / 8</span>
+            </div>
+          </header>
+          <ul class="zone-list" aria-label="Occupants salle du personnel"></ul>
+        </section>
+
+        <section class="zone zone-archive" id="archive" data-zone="archive" data-required="true" data-max="2">
+          <header class="zone-header">
+            <h3>Salle d'archives</h3>
+            <div class="zone-actions">
+              <button class="zone-add" title="Ajouter">+</button>
+              <span class="zone-capacity">0 / 2</span>
+            </div>
+          </header>
+          <ul class="zone-list" aria-label="Occupants salle d'archives"></ul>
+        </section>
+      </div>
+    </main>
+
+  </div>
+
+  <footer class="site-footer">
+    <small>© 2025 StaffMap — Prototype (HTML & CSS uniquement)</small>
+  </footer>
+
+
+</body>
+</html>
