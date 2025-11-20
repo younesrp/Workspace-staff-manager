@@ -138,6 +138,6 @@ function createWorkerCardForZone(worker){
 function removeWorkerFromZone(worker, cardDiv){
   worker.assignedTo = null;
   unassignedList.appendChild(createWorkerCardForZone(worker));
-  cardDiv.remove()
+  cardDiv.remove();
 }
 

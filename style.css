@@ -12,6 +12,7 @@
 html,body{height:100%;margin:0}
 
 body{
+  background-color: #659bf8;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -23,7 +24,7 @@ body{
 
 .sidebar{
   width:var(--sidebar-w);
-  background: rgba(255,255,255,0.95);
+  background: rgba(166, 188, 239, 0.95);
   border-radius:12px;
   padding:20px;
   box-shadow:0 6px 18px rgba(0,0,0,0.08);
@@ -51,6 +52,7 @@ body{
 
 .worker-card{
   background:var(--card-bg);
+  background: rgba(86, 86, 86, 0.95);
   padding:10px;
   border-radius:10px;
   display:flex;
@@ -77,6 +79,7 @@ body{
 }
 
 .canvas-wrap{
+  
   flex:1;
   position:relative;
   min-height:600px;
@@ -88,7 +91,7 @@ body{
   grid-template-rows: auto auto;          
   gap: 20px;
   padding: 20px;
-  background: rgba(255,255,255,0.7);
+  background: rgba(4, 143, 124, 0.7);
   border-radius: 12px;
   width: 100%;
 }
@@ -248,4 +251,34 @@ input,select,textarea{
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 6px;
+}
+.Conference{
+background-image: url(/img/Office\ background\ for\ video\ conferencing\ _\ Free\ Vector.jpg);
+background-size: cover;
+background-position: center;
+}
+.Reception{
+background-image: url(/img/Ilustração\ do\ conceito\ de\ recepção\ do\ hotel\ _\ Vetor\ Grátis.jpg);
+background-size: cover;
+background-position: center;
+}
+.Servers{
+background-image: url(/img/Room\ with\ Monitors\ for\ Video\ Surveillance_\ Security\ Concept\ Stock\ Illustration\ -\ Illustration\ of\ monitors\,\ video_\ 269800309.jpg);
+background-size: cover;
+background-position: center;
+}
+.Security{
+background-image: url(/img/Security\ room\ illustration\ _\ Free\ Vector.jpg);
+background-size: cover;
+background-position: center;
+}
+.Staff{
+background-image: url(/img/Staff\ room\ -\ Zin\ Noorain.jpg);
+background-size: cover;
+background-position: center;
+}
+.Archives{
+background-image: url(/img/téléchargement\ \(3\).jpg);
+background-size: cover;
+background-position: center;
 }
