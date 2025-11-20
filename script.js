@@ -22,6 +22,14 @@ const chooserBack = document.getElementById("chooserBack");
 const chooserList = document.getElementById("chooserList");
 const closeChooser = document.getElementById("closeChooser");
 
+const zonesRules = {
+  "Reception": ["receptionist","manager"],
+  "Servers": ["it","manager"],
+  "Security": ["security","manager"],
+  "Conference": ["receptionist","it","security","manager","cleaning","other"],
+  "Staff": ["receptionist","it","security","manager","cleaning","other"],
+  "Archives": ["manager","it"]
+};
 
 btnAdd.onclick = () => modalBack.style.display = "flex";
 cancelModal.onclick = () => modalBack.style.display = "none";
@@ -63,16 +71,73 @@ saveWorker.onclick = () => {
 function addWorkerCard(worker){
   const div = document.createElement("div");
   div.className = "worker-card";
-  div.dataset.id = worker.id;
-  div.innerHTML = `<img src="${worker.photo}"><div class="worker-info"><b>${worker.name}</b>${worker.role}</div>`;
-  div.onclick = () => openProfile(worker.id);
+  div.dataset.workerId = worker.id;
+  div.innerHTML = `<img src="${worker.photo}"><div class="worker-info"><b>${worker.name}</b> ${worker.role}</div>`;
+  div.onclick = () => openProfile(worker);
   unassignedList.appendChild(div);
 }
 
+function openProfile(worker){
+  profileContent.innerHTML = `
+    <img src="${worker.photo}" style="width:120px;height:120px">
+    <h3>${worker.name}</h3>
+    <p>Rôle: ${worker.role}</p>
+    <p>Email: ${worker.email}</p>
+    <p>Téléphone: ${worker.phone}</p>
+    <h4>Expériences:</h4>
+    <ul>
+      ${worker.experiences.map(e => `<li>${e.title}: ${e.start} → ${e.end}</li>`).join("")}
+    </ul>
+    <p>Localisation: ${worker.assignedTo || "Non assigné"}</p>
+  `;
+  profilePopup.style.display = "flex";
+}
 
-
+profilePopup.onclick = e => { if(e.target === profilePopup) profilePopup.style.display = "none"; }
 
 document.querySelectorAll(".add-btn").forEach(btn => {
   btn.onclick = () => openEligibleChooser(btn.dataset.zone);
 });
+
+closeChooser.onclick = () => chooserBack.style.display = "none";
+chooserBack.onclick = e => { if(e.target === chooserBack) chooserBack.style.display = "none"; }
+
+function openEligibleChooser(zone){
+  chooserList.innerHTML = "";
+  const eligibleWorkers = workers.filter(w => !w.assignedTo && zonesRules[zone].includes(w.role));
+  eligibleWorkers.forEach(worker => {
+    const div = document.createElement("div");
+    div.className = "worker-card";
+    div.innerHTML = `<img src="${worker.photo}"><div class="worker-info"><b>${worker.name}</b> ${worker.role}</div>`;
+    div.onclick = () => {
+      assignWorkerToZone(worker, zone);
+      chooserBack.style.display = "none";
+    }
+    chooserList.appendChild(div);
+  });
+  chooserBack.style.display = "flex";
+}
+
+function assignWorkerToZone(worker, zone){
+  const zoneList = document.querySelector(`.assigned-list[data-list="${zone}"]`);
+  worker.assignedTo = zone;
+  zoneList.appendChild(createWorkerCardForZone(worker));
+  const unassignedCard = [...unassignedList.children].find(c => parseInt(c.dataset.workerId) === worker.id);
+  if(unassignedCard) unassignedList.removeChild(unassignedCard);
+}
+
+function createWorkerCardForZone(worker){
+  const div = document.createElement("div");
+  div.className = "worker-card";
+  div.innerHTML = `<img src="${worker.photo}"><div class="worker-info"><b>${worker.name}</b> ${worker.role}</div><button class="remove-btn">X</button>`;
+  div.querySelector(".remove-btn").onclick = () => removeWorkerFromZone(worker, div);
+ 
+  return div;
+}
+
+function removeWorkerFromZone(worker, cardDiv){
+  worker.assignedTo = null;
+  unassignedList.appendChild(createWorkerCardForZone(worker));
+  cardDiv.remove()
+}
 
