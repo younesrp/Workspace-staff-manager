@@ -85,6 +85,8 @@
         <div class="col">
           <label>Photo (URL)</label>
           <input id="inpPhoto" type="url" placeholder="https://...">
+          <img id="photoPreview" style="width:60px;height:60px;border-radius:8px;display:none;margin-top:8px">
+
         </div>
         <div class="col">
           <label>Email</label>
@@ -103,9 +105,10 @@
           <button id="addExp" class="small-btn">+ Ajouter expérience</button>
         </div>
       </div>
-
+      
       <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
         <button id="cancelModal" class="small-btn">Annuler</button>
+        
         <button id="saveWorker" class="btn btn-green">Enregistrer</button>
       </div>
     </div>

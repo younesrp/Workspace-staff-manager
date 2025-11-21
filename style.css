@@ -1,3 +1,4 @@
+
 :root{
   --sidebar-w:320px;
   --accent-green:#39b54a;
@@ -20,6 +21,7 @@ body{
   min-height:100vh;
   align-items:stretch;
   padding:20px;
+  transition: all 0.3s ease;
 }
 
 .sidebar{
@@ -30,6 +32,8 @@ body{
   box-shadow:0 6px 18px rgba(0,0,0,0.08);
   margin-right:20px;
   overflow:auto;
+  flex-shrink:0;
+  transition: all 0.3s ease;
 }
 .sidebar h2{margin:0 0 12px;font-size:18px}
 
@@ -40,8 +44,12 @@ body{
   border:none;
   cursor:pointer;
   font-weight:600;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 .btn-green{background:var(--accent-green);color:white}
+.btn-orange{background:var(--accent-orange);color:white}
+.btn-red{background:var(--accent-red);color:white}
+.btn:hover{transform: scale(1.05); opacity:0.9;}
 
 .unassigned-list{
   margin-top:16px;
@@ -51,15 +59,17 @@ body{
 }
 
 .worker-card{
-  background:var(--card-bg);
-  background: rgba(86, 86, 86, 0.95);
+  background: rgba(255,255,255,0.95);
   padding:10px;
-  border-radius:10px;
+  border-radius:12px;
   display:flex;
   align-items:center;
   gap:10px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.05);
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  cursor:pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+.worker-card:hover{transform: translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,0.12);}
 .worker-card img{
   width:44px;
   height:44px;
@@ -76,28 +86,31 @@ body{
   background:#f3f4f6;
   border:0;
   cursor:pointer;
+  transition: background 0.2s ease;
 }
+.small-btn:hover{background:#e2e6ea;}
 
 .canvas-wrap{
-  
   flex:1;
   position:relative;
   min-height:600px;
+  transition: all 0.3s ease;
 }
 
 .floorplan-grid{
   display: grid;
-  grid-template-columns: repeat(3, 1fr); 
-  grid-template-rows: auto auto;          
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
   gap: 20px;
   padding: 20px;
-  background: rgba(4, 143, 124, 0.7);
+  background: rgba(4, 143, 124, 0.1);
   border-radius: 12px;
   width: 100%;
+  transition: all 0.3s ease;
 }
 
 .zone{
-  border: 2px solid rgba(0,0,0,0.15);
+  border: 2px solid rgba(0,0,0,0.1);
   border-radius: 12px;
   padding: 15px;
   background: rgba(255,255,255,0.95);
@@ -105,6 +118,7 @@ body{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .zone .zone-title{
@@ -112,11 +126,9 @@ body{
   margin-bottom:10px;
   font-size:16px;
 }
-
 .zone-actions{
   margin-top:10px;
 }
-
 .zone .add-btn{
   background:#e6f2ff;
   border:0;
@@ -124,13 +136,11 @@ body{
   border-radius:8px;
   cursor:pointer;
 }
-
 .assigned-list{
   display:flex;
   flex-wrap:wrap;
   gap:6px;
 }
-
 .assigned-item{
   display:flex;
   align-items:center;
@@ -140,16 +150,13 @@ body{
   border-radius:20px;
   box-shadow:0 3px 8px rgba(0,0,0,0.06);
 }
-
 .assigned-item img{
   width:28px;
   height:28px;
   border-radius:50%;
   object-fit:cover;
 }
-
 .assigned-item .name{font-size:13px}
-
 .badge-x{
   background:var(--accent-red);
   color:white;
@@ -171,7 +178,6 @@ body{
   justify-content:center;
   padding:20px;
 }
-
 .modal{
   background:white;
   padding:18px;
@@ -181,38 +187,33 @@ body{
   max-height:90vh;
   overflow:auto;
 }
-
 .form-row{
   display:flex;
   gap:8px;
   margin-bottom:10px;
+  flex-wrap:wrap;
 }
-
-.form-row .col{flex:1}
-
+.form-row .col{flex:1 1 200px;}
 label{
   font-size:13px;
   color:var(--muted);
   display:block;
   margin-bottom:6px;
 }
-
 input,select,textarea{
   width:100%;
   padding:8px;
   border-radius:8px;
   border:1px solid #e6e9ee;
 }
-
 .experiences{margin-top:8px}
-
 .exp-item{
   display:flex;
   gap:8px;
   align-items:center;
   margin-bottom:8px;
+  flex-wrap:wrap;
 }
-
 .exp-item input{padding:6px}
 
 .profile-popup{
@@ -225,32 +226,22 @@ input,select,textarea{
   box-shadow:0 8px 24px rgba(0,0,0,0.12);
   display:none;
   width:280px;
+  transition: all 0.3s ease;
 }
 
-@media (max-width:900px){
-  body{padding:12px}
-  .sidebar{display:none}
-
-  .floorplan-grid{
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-  }
+@media (max-width:1279px){
+  .floorplan-grid{grid-template-columns: repeat(2,1fr);}
+  .sidebar{width:280px;}
 }
-.chooser-card{
-  width: 160px;
-  background: white;
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  cursor: pointer;
-  text-align: center;
+@media (max-width:1023px){
+  body{flex-direction:column; padding:12px;}
+  .floorplan-grid{grid-template-columns: 1fr; grid-template-rows: repeat(6, auto);}
+  .sidebar{width:100%;margin-right:0;margin-bottom:12px;padding:12px;}
+  .canvas-wrap{min-height:400px;}
 }
-.chooser-card img{
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 6px;
+@media (max-width:767px){
+  .sidebar{padding:12px;}
+  .canvas-wrap{min-height:300px;}
 }
 .Conference{
 background-image: url(/img/Office\ background\ for\ video\ conferencing\ _\ Free\ Vector.jpg);
