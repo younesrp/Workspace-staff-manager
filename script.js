@@ -1,5 +1,5 @@
 let workers = [];
-let workerIdCounter = 0;
+let workerId = 0;
 
 const unassignedList = document.getElementById("unassignedList");
 const btnAdd = document.getElementById("btnAdd");
@@ -22,12 +22,39 @@ const chooserBack = document.getElementById("chooserBack");
 const chooserList = document.getElementById("chooserList");
 const closeChooser = document.getElementById("closeChooser");
 
+function saveToLocal() {
+  localStorage.setItem("workers", JSON.stringify(workers));
+  localStorage.setItem("workerId", workerId.toString());
+}
+function loadFromLocal() {
+  const savedWorkers = localStorage.getItem("workers");
+  const savedId = localStorage.getItem("workerId");
 
+  if (savedWorkers) workers = JSON.parse(savedWorkers);
+  if (savedId) workerId = parseInt(savedId);
+
+  unassignedList.innerHTML = "";
+  document.querySelectorAll(".assigned-list").forEach(list => list.innerHTML = "");
+
+  workers.forEach(w => {
+    if (!w.assignedTo) {
+      addWorker(w);
+    } else {
+      const zoneList = document.querySelector(`.assigned-list[data-list="${w.assignedTo}"]`);
+      if (zoneList) zoneList.appendChild(creatCard(w));
+    }
+  });
+
+  colorCard();
+}
+
+
+window.onload = loadFromLocal;
 
 const zonesRules = {
-  "Reception": ["receptionist", "manager"],
-  "Servers": ["it", "manager"],
-  "Security": ["security", "manager"],
+  "Reception": ["receptionist", "manager","cleaning"],
+  "Servers": ["it", "manager","cleaning"],
+  "Security": ["security", "manager","cleaning"],
   "Conference": ["receptionist","it","security","manager","cleaning","other"],
   "Staff": ["receptionist","it","security","manager","cleaning","other"],
 
@@ -60,7 +87,7 @@ saveWorker.onclick = () => {
   const email = inpEmail.value.trim();
   const phone = inpPhone.value.trim();
 
-  const regexError = validateRegex(name, email, phone, photo);
+  const regexError = Regexvalid(name, email, phone, photo);
   if (regexError) return alert(regexError);
 
   const expItems = Array.from(experiencesContainer.children).map(div => {
@@ -71,17 +98,18 @@ saveWorker.onclick = () => {
 
   if(expItems.includes(null)) return alert("La date de début doit être antérieure à la date de fin");
 
-  const worker = {id: workerIdCounter++, name, role, photo, email, phone, experiences: expItems, assignedTo: null};
-  workers.push(worker);
+  const worker = {id: workerId++, name, role, photo, email, phone, experiences: expItems, assignedTo: null};
+ workers.push(worker);
 
-  addWorkerCardUnassigned(worker);
+  addWorker(worker);
+  saveToLocal(); 
 
   modalBack.style.display = "none";
   inpName.value=""; inpPhoto.value=""; inpEmail.value=""; inpPhone.value="";
   experiencesContainer.innerHTML="";
 }
 
-function addWorkerCardUnassigned(worker){
+function addWorker(worker){
   const div = document.createElement("div");
   div.className = "worker-card";
   div.dataset.workerId = worker.id;
@@ -123,17 +151,17 @@ chooserBack.onclick = e => { if(e.target === chooserBack) chooserBack.style.disp
 function openEligibleChooser(zone){
   chooserList.innerHTML = "";
 
-  const eligibleWorkers = workers.filter(w => 
+  const allowedWorker = workers.filter(w => 
     !w.assignedTo &&
     isAllowed(w.role, zone)
   );
 
-  eligibleWorkers.forEach(worker => {
+  allowedWorker.forEach(worker => {
     const div = document.createElement("div");
     div.className = "worker-card";
     div.innerHTML = `<img src="${worker.photo}"><div class="worker-info"><b>${worker.name}</b> ${worker.role}</div>`;
     div.onclick = () => {
-      addWorkerCardAssigned(worker, zone);
+      workerTozone(worker, zone);
       chooserBack.style.display = "none";
     }
     chooserList.appendChild(div);
@@ -142,7 +170,7 @@ function openEligibleChooser(zone){
   chooserBack.style.display = "flex";
 }
 
-function validateRegex(name, email, phone, photo) {
+function Regexvalid(name, email, phone, photo) {
   const nameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿ'\- ]{2,50}$/;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRegex = /^\+?\d{8,15}$/;
@@ -167,7 +195,7 @@ inpPhoto.oninput = () => {
   }
 };
 
-function refreshZoneColors() {
+function colorCard() {
   document.querySelectorAll(".zone").forEach(zone => {
     const isRequired = zone.dataset.required === "true";
     const list = zone.querySelector(".assigned-list");
@@ -178,9 +206,9 @@ function refreshZoneColors() {
       zone.style.backgroundColor = "";
     }
   });
-}
+}   
 
-function addWorkerCardAssigned(worker, zone){
+function workerTozone(worker, zone){
   const zoneList = document.querySelector(`.assigned-list[data-list="${zone}"]`);
 
   if (zoneList.children.length >= zoneLimits[zone]) {
@@ -189,15 +217,16 @@ function addWorkerCardAssigned(worker, zone){
   }
 
   worker.assignedTo = zone;
-  zoneList.appendChild(createWorkerCardForZone(worker));
+  zoneList.appendChild(creatCard(worker));
 
   const unassignedCard = [...unassignedList.children].find(c => parseInt(c.dataset.workerId) === worker.id);
   if(unassignedCard) unassignedList.removeChild(unassignedCard);
 
-  refreshZoneColors();
+  colorCard();
+  saveToLocal();
 }
 
-function createWorkerCardForZone(worker){
+function creatCard(worker){
   const div = document.createElement("div");
   div.className = "worker-card";
   div.innerHTML = `
@@ -205,17 +234,19 @@ function createWorkerCardForZone(worker){
     <div class="worker-info"><b>${worker.name}</b> ${worker.role}</div>
     <button class="remove-btn">X</button>
   `;
-  div.querySelector(".remove-btn").onclick = () => removeWorkerFromZone(worker, div);
+  div.querySelector(".remove-btn").onclick = () => removeWorker(worker, div); // FIX
 
   return div;
 }
 
-function removeWorkerFromZone(worker, cardDiv){
+
+function removeWorker(worker, cardDiv){
   worker.assignedTo = null;
 
-  addWorkerCardUnassigned(worker); 
+  addWorker(worker); 
 
   cardDiv.remove();
 
-  refreshZoneColors();
+  colorCard();
+  saveToLocal();
 }
